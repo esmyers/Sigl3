@@ -180,6 +180,17 @@ $( document ).ready(function() {
 	  }).replace(/\s+/g, '');
 	}
 
+	    //TEST FILTERING OPERATIONS_______________________________________________________________________________________________________
+    $(".lakeDropdown li").on('click', function(mapLayers){
+    	var selected = $(this).text();
+    	console.log(selected);
+
+
+    });
+
+     //END TEST FILTERING OPERATIONS_______________________________________________________________________________________________________
+
+
 	//get visible and non visible layer lists
 	function addMapServerLegend(layerName, layerDetails) {
 
@@ -359,6 +370,7 @@ $( document ).ready(function() {
         $('#legend').hide();
     });
     /* legend control */
+
 
 
 });
