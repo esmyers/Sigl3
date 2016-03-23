@@ -102,19 +102,6 @@ $( document ).ready(function() {
         return div;
     }  
 
-    map.on('click', function(e){
-        map.removeLayer(siglSites);
-
-        var newLayer = new L.tileLayer.betterWms('http://107.23.251.59:8080/geoserver/usgs/wms?', {
-            layers: 'SITE',
-            transparent: 'true',
-            format: 'image/png',
-            CQL_FILTER: 'LAKE_TYPE_ID = 1'
-        }).addTo(map);
-        //siglSites.wmsParams.push("CQL_FILTER: 'LAKE_TYPE_ID = 1'" );
-        //siglSites.addTo(map);
-    });
-
     legend.addTo(map);
 
     /*function startLoading(){
@@ -224,16 +211,62 @@ $( document ).ready(function() {
         "<span class='italic'>(not frozen)</span>";
     }*/
 
-    $(".lakeDropdown li").on('click', function(map){
-        map.removeLayer(siglSites);
 
+    //Lake Dropdown control
+    $(".lakeDropdown li").on('click', function(e){
+
+        //use text to set queryable value
+        function setQueryItem(selected) {
+            switch(selected){
+                case "Superior":
+                    return 5;
+                    break;
+                case "Michigan":
+                    return 3;
+                    break;
+                case "Huron":
+                    return 2;
+                    break;
+                case "Erie":
+                    return 1;
+                    break;
+                case "Ontario":
+                    return 4;
+                    break;
+                default:
+                    return 5;
+            }
+        }
+
+        //get text from selected dropdown item
         var selected = $(this).text();
-        console.log(selected);
-        var layerParams = siglSites.wmsParams;
-        layerParams.push("'CQL_FILTER': 'LAKE_TYPE_ID = " + selected + "'" );
-        map.removeLayer(siglSites);
-        siglSites.redraw();
+
+        var newFilter = "LAKE_TYPE_ID = " + setQueryItem(selected) ;
+        addSitesLayer(e, newFilter);
+       
+    });
+    //END lake dropdown control
+
+     $(".stateDropdown li").on('click', function(e){
+        //get text from selected dropdown item
+        var selected = $(this).text();
+
+        var newFilter = "STATE_PROVINCE = '" + selected + "'" ;
+        addSitesLayer(e, newFilter);
+       
     });
 
+    //TODO: will need to add cql filter to getFeatureInfoUrl params to mask out invisible points.
+    function addSitesLayer(e, newFilter){
+        //remove existing layer
+        map.removeLayer(siglSites);
+         //set siglSites to a new layer w/ query attached.
+        siglSites = new L.tileLayer.betterWms('http://107.23.251.59:8080/geoserver/usgs/wms?', {
+            layers: 'SITE',
+            transparent: 'true',
+            format: 'image/png',
+            CQL_FILTER: newFilter
+        }).addTo(map);
+    }
 
 });
