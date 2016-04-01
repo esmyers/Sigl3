@@ -452,6 +452,11 @@ input[type="checkbox"], input[type="radio"] {
     top:50%;
 }
 
+/*-------CRITICAL-----------ALLOWS CLICK EVENTS TO PERMEATE THROUGH FEATURE LAYERS TO WMS*/
+g {
+    pointer-events: none;
+}
+
 
 
 /*END ADDITIONAL CSS________________________________________________________________________________________________________*/

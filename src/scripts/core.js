@@ -2,7 +2,10 @@
 
 //main document ready function
 $( document ).ready(function() {
-
+    
+    //FOR DEV ONLY
+    console.log('Reading from core.js (Layers Object example, GeoServer, betterWMS layer type)');
+    
 	//for jshint
 	'use strict';
 
@@ -10,6 +13,8 @@ $( document ).ready(function() {
 	var map = L.map('mapDiv').setView([45.00, -85.5], 6);
 	var layer = L.esri.basemapLayer('NationalGeographic').addTo(map);
 	var layerLabels;
+    
+    
 
 	$('#mapDiv').height($('body').height());
 	map.invalidateSize();

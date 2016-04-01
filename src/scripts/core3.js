@@ -7,6 +7,9 @@
 
 $( document ).ready(function() {
 
+    //FOR DEV ONLY
+    console.log('Reading from core3.js (Geoserver + No Layer object, BetterWms layer + ESRI leaflet layers)');
+    
     //for jshint
     'use strict';
 
@@ -50,10 +53,8 @@ $( document ).ready(function() {
     $('.leaflet-container').css('cursor','pointer');
 
     //ISSUE: figure out hex keys and add them
-   L.esri.featureLayer({
+    L.esri.featureLayer({
         url: "http://sigl.wim.usgs.gov:6080/arcgis/rest/services/SIGL/SIGLMapper/MapServer/3",
-        simplifyFactor: 0.5,
-        precision: 5,
         style: function(feature){
             if (feature.properties.LAKE == "ls"){
                 return {color: 'DarkCyan', weight:0};
@@ -73,14 +74,40 @@ $( document ).ready(function() {
         }
     }).addTo(map);
 
+    /*L.tileLayer.betterWms('http://107.23.251.59:8080/geoserver/SiglAux/wms?', {
+        layers: 'GLRI_Basins_HUC12Linework',
+        transparent: 'true',
+        format: 'image/png',
+        style: function(feature){
+            if (feature.properties.LAKE == "ls"){
+                return {color: 'DarkCyan', weight:0};
+            }
+            if (feature.properties.LAKE == "lm"){
+                return {color: 'DarkKhaki', weight:0};
+            }
+            if (feature.properties.LAKE == "lh"){
+                return {color: 'IndianRed', weight:0};
+            }
+            if (feature.properties.LAKE == "le"){
+                return {color: 'Olive', weight:0};
+            }
+            if (feature.properties.LAKE == "lo"){
+                return {color: 'MediumPurple', weight:0};
+            }
+        }
+    }).addTo(map);*/
+
+
+    //removed simplyfyFactor + precision to paradoxically increase performance
    L.esri.featureLayer({
         url: "http://sigl.wim.usgs.gov:6080/arcgis/rest/services/SIGL/SIGLMapper/MapServer/1",
-        simplifyFactor: 0.5,
-        precision: 5,
+
         style: function(){
             return {color: 'DarkOrange', weight: 1 };
         }
     }).addTo(map);
+
+   
 
     var siglSites = new L.tileLayer.betterWms('http://107.23.251.59:8080/geoserver/usgs/wms?', {
         layers: 'SITE',

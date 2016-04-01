@@ -49,7 +49,8 @@ L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
           layers: this.wmsParams.layers,
           buffer: 10,
           query_layers: this.wmsParams.layers,
-          info_format: 'application/json'
+          info_format: 'application/json',
+          feature_count: '20'
         };
     
     params[params.version === '1.3.0' ? 'i' : 'x'] = point.x;

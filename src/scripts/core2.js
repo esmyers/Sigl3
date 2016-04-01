@@ -6,6 +6,9 @@
 //MUCH SLOWER than circlemarker implementation, but does work with original spiderfy library 
 
 $( document ).ready(function() {
+    
+    //FOR DEV ONLY
+    console.log('Reading from core2.js (straight JSON + markerCluster + OMS.spiderfy)');
 
     //for jshint
     'use strict';
@@ -79,6 +82,7 @@ $( document ).ready(function() {
         }
     }).addTo(map);
 
+    //original request to lampservices
     $.ajax({
         dataType: "json",
         url: "https://sigldev.wim.usgs.gov/LaMPServicesTest/sites/siteView.json",
