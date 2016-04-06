@@ -15,6 +15,8 @@
     
     <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css">
     <link rel="stylesheet" href="bower_components/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
+
     
     <!-- endbower -->
 
@@ -37,6 +39,8 @@
     <script src="bower_components/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/bootstrap-sidebar/dist/js/sidebar.js"></script>
+    <script src="bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+
 
     
 
@@ -44,6 +48,7 @@
     <script src="bower_components/esri-leaflet/dist/esri-leaflet.js"></script>
     <script src="bower_components/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js"></script>
     <script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
     
     <!-- endbower -->
     <!--NONBOWER BUILD_______________________________________________________________________________________________________-->
@@ -60,7 +65,7 @@
     <!-- build:js scripts/combined.js -->
     <script src="scripts/utilities.js"></script>
     <script src="scripts/layers.js"></script>
-    <script src="scripts/core.js"></script>
+    <script src="scripts/core3.js"></script>
     <!-- endbuild -->
 
 </head>
@@ -213,34 +218,45 @@
                     <div id="toggle" style="padding: 2px 2px;"></div>
                 </div>
 
-                <div class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Lake Filter
-                    <span class="caret"></span></button>
-                    <ul class="dropdown-menu lakeDropdown">
-                        <li><a href="#">Superior</a></li>
-                        <li><a href="#">Michigan</a></li>
-                        <li><a href="#">Huron</a></li>
-                        <li><a href="#">Erie</a></li>
-                        <li><a href="#">Ontario</a></li>
-                    </ul>
-                </div>
+                <div class="panel panel-default wim-sidebar-panel">
+                    <div class="panel-heading" id="filterPanelHeader">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" href="#filterPanel" aria-expanded="true" aria-controls="filterPanel">
+                                Filter Data
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="filterPanel" class="panel-collapse collapse in" role="tabpanel" area-labeldby="filterPanelHeader">
+                        
+                            <select class="selectpicker show-tick lakeSelect" title="Lake Filter" multiple>
+                              <option>Superior</option>
+                              <option>Michigan</option>
+                              <option>Huron</option>
+                              <option>Erie</option>
+                              <option>Ontario</option>
+                            </select>
 
-                 <div class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">State/Province Filter
-                    <span class="caret"></span></button>
-                    <ul class="dropdown-menu stateDropdown">
-                        <li><a href="#">Michigan</a></li>
-                        <li><a href="#">Wisconsin</a></li>
-                        <li><a href="#">Indiana</a></li>
-                        <li><a href="#">Minnesota</a></li>
-                        <li><a href="#">New York</a></li>
-                        <li><a href="#">Illinois</a></li>
-                        <li><a href="#">Ohio</a></li>
-                        <li><a href="#">Ontario</a></li>
-                        <li><a href="#">Pennsylvania</a></li>
-                    </ul>
-                </div>
+                            <select class="selectpicker show-tick stateSelect" title="State/Province Filter" multiple>
+                              <option>Michigan</option>
+                              <option>Wisconsin</option>
+                              <option>Minnesota</option>
+                              <option>New York</option>
+                              <option>Illinois</option>
+                              <option>Ohio</option>
+                              <option>Ontario</option>
+                              <option>Pensylvania</option>
+                            </select>
 
+                            <select class="selectpicker show-tick" data-live-search="true" title="Yuuge searchable List" multiple>
+                              <option>huge project list</option>
+                              <option>project321</option>
+                              <option>project345</option>
+                              <option>project45345</option>
+                              <option>project65996</option>
+                            </select>
+                        </div>
+                    
+                </div>
             </div>
             <!-- # closing div tag for accordion style panels -->
             <!--</div>-->

@@ -239,10 +239,10 @@ $( document ).ready(function() {
     }*/
 
 
-    //Lake Dropdown control
-    $(".lakeDropdown li").on('click', function(e){
+    //lake select Control+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    $(".lakeSelect").on('hide.bs.select', function(e){
 
-        //use text to set queryable value
+        //use selected text to set queryable value (numeric lake ID) 
         function setQueryItem(selected) {
             switch(selected){
                 case "Superior":
@@ -265,23 +265,45 @@ $( document ).ready(function() {
             }
         }
 
-        //get text from selected dropdown item
-        var selected = $(this).text();
-
-        var newFilter = "LAKE_TYPE_ID = " + setQueryItem(selected) ;
+        var newFilter = "LAKE_TYPE_ID IN ("
+        var selectedValues = $(".lakeSelect option:selected");
+        
+        //TODO figure out how to pass the numeric ID to the update function
+        $.each($(selectedValues), function(index){
+            if (index !== selectedValues.length -1){
+                 newFilter += "'" + setQueryItem($(this).val()) + "',";
+            } else{
+                newFilter += "'" + setQueryItem($(this).val()) + "')";
+            }    
+        });
+        console.log(newFilter);
         addSitesLayer(e, newFilter);
-       
     });
-    //END lake dropdown control
+    //END lake Select Control+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-     $(".stateDropdown li").on('click', function(e){
-        //get text from selected dropdown item
-        var selected = $(this).text();
+    $(".stateSelect").on('hide.bs.select', function(e){
+        
+        var newFilter = "STATE_PROVINCE IN ("
+        var selectedValues = $(".stateSelect option:selected");
+        
+        //call function to make code smaller
+        executeQuery(newFilter, selectedValues);
 
-        var newFilter = "STATE_PROVINCE = '" + selected + "'" ;
+     });
+
+    function executeQuery(newFilter, selectedValues, e){
+        //build the query string
+        $.each($(selectedValues), function(index){
+            if (index !== selectedValues.length -1){
+                 newFilter += "'" + $(this).val() + "',";
+            } else{
+                newFilter += "'" + $(this).val() + "')";
+            }    
+        });
+        console.log(newFilter);
+        //add the new filtered layer
         addSitesLayer(e, newFilter);
-       
-    });
+    }
 
     //TODO: will need to add cql filter to getFeatureInfoUrl params to mask out invisible points.
     function addSitesLayer(e, newFilter){

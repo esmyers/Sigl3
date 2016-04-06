@@ -66,12 +66,23 @@ L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
     //build popup if a feature is returned
     if (content.features.length >= 1){
 
+      //get content
       var popupFields = content.features[0].properties;
-      var siteId = content.features[0].id.replace("SITE.", " ");
+      
+      //clean up site ID
+      //var siteId = content.features[0].id.replace("SITE.", " ");
+      var siteId = content.features[0].properties.SITE_ID;
+      
+      //get actual site location and not just the click location
+      var siteLocation = {};
+      siteLocation = {
+          lat: content.features[0].properties.LATITUDE,
+          lng: content.features[0].properties.LONGITUDE
+      }
 
       
       L.popup({ maxWidth: 800})
-        .setLatLng(latlng)
+        .setLatLng(siteLocation)
         .setContent("SITE: " + siteId + " <br/> Name: " + popupFields.NAME + " <br/> Site Description: " + popupFields.DESCRIPTION + "<br/> Project ID: " + popupFields.PROJECT_ID)
         .openOn(this._map);
     }
