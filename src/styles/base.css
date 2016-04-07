@@ -101,6 +101,7 @@ a:focus {
 #sidebar {
   background-color: #ECEEF3;
   font-family: 'Open Sans', sans-serif;
+  overflow:visible;
 }
 @media (max-width: 991px) {
   #sidebar {
