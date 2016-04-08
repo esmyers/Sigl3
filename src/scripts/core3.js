@@ -239,7 +239,7 @@ $( document ).ready(function() {
     }*/
 
 
-    //lake select Control+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //BEGIN lake select Control+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     $(".lakeSelect").on('hide.bs.select', function(e){
 
         //use selected text to set queryable value (numeric lake ID) 
@@ -265,33 +265,113 @@ $( document ).ready(function() {
             }
         }
 
-        var newFilter = "LAKE_TYPE_ID IN ("
         var selectedValues = $(".lakeSelect option:selected");
         
-        //TODO figure out how to pass the numeric ID to the update function
-        $.each($(selectedValues), function(index){
-            if (index !== selectedValues.length -1){
-                 newFilter += "'" + setQueryItem($(this).val()) + "',";
-            } else{
-                newFilter += "'" + setQueryItem($(this).val()) + "')";
-            }    
-        });
-        console.log(newFilter);
-        addSitesLayer(e, newFilter);
+        if (selectedValues.length > 0){
+            
+            //loop through selected options and create filter string
+            var newFilter = "LAKE_TYPE_ID IN ("
+            $.each($(selectedValues), function(index){
+                if (index !== selectedValues.length -1){
+                     newFilter += "'" + setQueryItem($(this).val()) + "',";
+                } else{
+                    newFilter += "'" + setQueryItem($(this).val()) + "')";
+                }    
+            });
+            console.log(newFilter);
+            addSitesLayer(e, newFilter);
+        } else{
+            addSitesLayer(e, "LAKE_TYPE_ID IS NOT NULL");
+        }
     });
     //END lake Select Control+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+    
+    //BEGIN State Select Control+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     $(".stateSelect").on('hide.bs.select', function(e){
-        
-        var newFilter = "STATE_PROVINCE IN ("
+
         var selectedValues = $(".stateSelect option:selected");
         
-        //call function to make code smaller
-        executeQuery(newFilter, selectedValues);
-
+        if (selectedValues.length > 0){
+            getAllSelects();
+            
+            //loop through selected options and create filter string
+            var newFilter = "STATE_PROVINCE IN ("
+            $.each($(selectedValues), function(index){
+                if (index !== selectedValues.length -1){
+                     newFilter += "'" + $(this).val() + "',";
+                } else{
+                    newFilter += "'" + $(this).val() + "')";
+                }    
+            });
+            console.log(newFilter);
+            //add the new filtered layer
+            addSitesLayer(e, newFilter);
+        } else{
+            addSitesLayer(e, "STATE_PROVINCE IS NOT NULL");
+        }
      });
 
-    function executeQuery(newFilter, selectedValues, e){
+
+    function getAllSelects() {
+
+
+        var states = $(".stateSelect option:selected");
+        var lakes = $(".lakeSelect option:selected");
+
+        var filterString = "";
+
+        
+
+            function setQueryItem(selected) {
+                switch(selected){
+                    case "Superior":
+                        return 5;
+                        break;
+                    case "Michigan":
+                        return 3;
+                        break;
+                    case "Huron":
+                        return 2;
+                        break;
+                    case "Erie":
+                        return 1;
+                        break;
+                    case "Ontario":
+                        return 4;
+                        break;
+                    default:
+                        return 5;
+                }
+            }
+            filterString = "LAKE_TYPE_ID IN ("
+            $.each($(lakes), function(index){
+                if (index !== lakes.length -1){
+                     filterString += "'" + setQueryItem($(this).val()) + "',";
+                } else{
+                    filterString += "'" + setQueryItem($(this).val()) + "')";
+                }    
+            });
+            console.log(filterString);
+            //addSitesLayer(e, newFilter);
+            filterString += "AND STATE_PROVINCE IN ("
+            $.each($(states), function(index){
+                if (index !== states.length -1){
+                     filterString += "'" + $(this).val() + "',";
+                } else{
+                    filterString += "'" + $(this).val() + "')";
+                }    
+            });
+            console.log(filterString);
+            //add the new filtered layer
+            //addSitesLayer(e, newFilter);
+    
+
+    }
+
+    //END State Select Control+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    //NOT YET Build a loop function that will handle ALL the Dropdowns.  (need to figure out how to do this with LAKE_TYPE_ID etc)
+   /* function executeQuery(newFilter, selectedValues, e){
         //build the query string
         $.each($(selectedValues), function(index){
             if (index !== selectedValues.length -1){
@@ -303,7 +383,7 @@ $( document ).ready(function() {
         console.log(newFilter);
         //add the new filtered layer
         addSitesLayer(e, newFilter);
-    }
+    }*/
 
     //TODO: will need to add cql filter to getFeatureInfoUrl params to mask out invisible points.
     function addSitesLayer(e, newFilter){
